@@ -14,7 +14,7 @@ function getMessages(int $sinceTimestamp = null):array {
 		);
 
 // Skip files older than the requested timestamp.
-		if($timestamp < $sinceTimestamp) {
+		if($timestamp <= $sinceTimestamp) {
 			continue;
 		}
 
@@ -22,6 +22,7 @@ function getMessages(int $sinceTimestamp = null):array {
 		$contents = trim($contents);
 		list($user, $message) = explode("\t", $contents);
 		$messages []= [
+			"timestamp" => $timestamp,
 			"time" => date("H:i:s", $timestamp),
 			"user" => $user,
 			"message" => $message,

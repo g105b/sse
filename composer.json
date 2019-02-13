@@ -1,6 +1,7 @@
 {
 	"minimum-stability": "dev",
 	"require": {
-		"phpgt/domtemplate": "dev-master"
+		"phpgt/domtemplate": "dev-master",
+		"react/http": "0.8.4"
 	}
 }
