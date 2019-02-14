@@ -54,4 +54,5 @@ function getMessageHtml(HTMLDocument $document, $message):string {
 	$chatElement = $import->importNode($chatElement, true);
 	$chatElement = $import->documentElement->appendChild($chatElement);
 	$html = str_replace("\n", "", $chatElement->outerHTML);
+	return $html ?? "";
 }

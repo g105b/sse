@@ -9,7 +9,6 @@ use Gt\DomTemplate\HTMLDocument;
 use React\Stream\ThroughStream;
 use React\Socket\Server;
 
-session_start();
 $loop = React\EventLoop\Factory::create();
 
 $server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
@@ -73,30 +72,32 @@ $server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
 		break;
 	}
 
+	$headers = [
+		"Content-Type" => "text/html",
+	];
+
+	$user = null;
 	$data = $request->getParsedBody();
 	if(!empty($data)) {
 		saveMessage($data["user"], $data["message"]);
-		return new Response(
-			303,
-			[
-				"Location" => "/",
-			]
-		);
+		$headers["Set-Cookie"] = "user=$data[user]";
+		$user = $data["user"];
 	}
 
 	$document->getElementById("message-list")->bind(getMessages());
 
-//	if(!empty($cookie["user"])) {
-//		$nameInput = $document->querySelector("input[name='user']");
-//		$nameInput->value = $_SESSION["user"];
-//		$nameInput->setAttribute("readonly", true);
-//	}
+	$cookie = $request->getCookieParams();
+	$user = $user ?? $cookie["user"] ?? null;
+	if($user) {
+		$nameInput = $document->querySelector("input[name='user']");
+		$nameInput->value = $user;
+		$nameInput->setAttribute("readonly", true);
+	}
+
 
 	return new Response(
 		200,
-		[
-			"Content-Type" => "text/html",
-		],
+		$headers,
 		$document
 	);
 });
