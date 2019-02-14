@@ -7,6 +7,7 @@ use React\Http\Response;
 use React\Http\Server as HttpServer;
 use Gt\DomTemplate\HTMLDocument;
 use React\Stream\ThroughStream;
+use React\Socket\Server;
 
 session_start();
 $loop = React\EventLoop\Factory::create();
@@ -100,7 +101,7 @@ $server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
 	);
 });
 
-$socket = new React\Socket\Server(8080, $loop);
+$socket = new Server(8080, $loop);
 $server->listen($socket);
 
 $loop->run();
