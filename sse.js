@@ -1,8 +1,9 @@
 (function() {
 
+let outputTo = document.currentScript.previousElementSibling;
 let sse = new EventSource("/");
-sse.onmessage = function(event) {
-	console.log(event);
-}
+sse.addEventListener("newchat", function(event) {
+	outputTo.innerHTML += event.data;
+});
 
 })();

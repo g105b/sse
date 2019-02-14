@@ -25,10 +25,11 @@ $server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
 		$loop->addPeriodicTimer(1, function()use($stream, $document, &$lastCheckedTime) {
 			foreach(getMessages($lastCheckedTime) as $message) {
 				$chatElement = $document->getTemplate("/html/body/form/ul/li");
-				$fragment = $document->createDocumentFragment();
-				$fragment->appendChild($chatElement);
 				$chatElement->bind($message);
-				$html = $chatElement->outerHTML;
+				$import = new HTMLDocument();
+				$chatElement = $import->importNode($chatElement, true);
+				$chatElement = $import->documentElement->appendChild($chatElement);
+				$html = str_replace("\n", "", $chatElement->outerHTML);
 
 				$stream->write("id: $message[timestamp]\n");
 				$stream->write("event: newchat\n");
