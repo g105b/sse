@@ -2,6 +2,7 @@
 require("vendor/autoload.php");
 require("messages.php");
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 use Gt\DomTemplate\HTMLDocument;
@@ -11,7 +12,7 @@ use React\Socket\Server as SocketServer;
 
 $loop = React\EventLoop\Factory::create();
 
-$server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
+$server = new HttpServer(function (ServerRequestInterface $request) use($loop):ResponseInterface {
 	$document = new HTMLDocument(
 		file_get_contents("template/chat-page.html")
 	);
