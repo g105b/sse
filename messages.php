@@ -1,4 +1,7 @@
 <?php
+
+use Gt\DomTemplate\HTMLDocument;
+
 function getMessages(int $sinceTimestamp = null):array {
 	$messages = [];
 
@@ -42,4 +45,13 @@ function saveMessage(string $user, string $message):void {
 		"data/$now.chat",
 		"$user\t$message"
 	);
+}
+
+function getMessageHtml(HTMLDocument $document, $message):string {
+	$chatElement = $document->getTemplate("/html/body/form/ul/li");
+	$chatElement->bind($message);
+	$import = new HTMLDocument();
+	$chatElement = $import->importNode($chatElement, true);
+	$chatElement = $import->documentElement->appendChild($chatElement);
+	$html = str_replace("\n", "", $chatElement->outerHTML);
 }
