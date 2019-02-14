@@ -48,6 +48,10 @@ function saveMessage(string $user, string $message):void {
 }
 
 function getMessageHtml(HTMLDocument $document, $message):string {
+	if(empty($message)) {
+		return "";
+	}
+
 	$chatElement = $document->getTemplate("/html/body/form/ul/li");
 	$chatElement->bind($message);
 	$import = new HTMLDocument();
