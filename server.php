@@ -4,10 +4,10 @@ require("messages.php");
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
-use React\Http\Server as HttpServer;
 use Gt\DomTemplate\HTMLDocument;
 use React\Stream\ThroughStream;
-use React\Socket\Server;
+use React\Http\Server as HttpServer;
+use React\Socket\Server as SocketServer;
 
 $loop = React\EventLoop\Factory::create();
 
@@ -102,7 +102,7 @@ $server = new HttpServer(function (ServerRequestInterface $request) use($loop) {
 	);
 });
 
-$socket = new Server(8080, $loop);
+$socket = new SocketServer("0.0.0.0:8080", $loop);
 $server->listen($socket);
 
 $loop->run();
